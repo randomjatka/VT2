@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="fi" xmlns="http://www.w3.org/1999/xhtml" xml:lang="fi">
+    <head>
+        <meta charset="utf-8"/>
+        <script src="vt2.js"></script>
+        <link rel="StyleSheet" href="tyylit.css" type="text/css" />
+        <title>VT2 - 2023 kevät - TIEA2120</title>
+    </head>
+    <body>
+
+<!-- Tämän tiedoston sisältöä saa muuttaa vapaasti tästä eteenpäin. Yläpuolelta ei saa muuttaa -->
+
+<h1>Tulospalvelu</h1>
+
+<!-- Tähän tulee ykköstasolla taulukko sarjoista ja joukkueista. -->
+
+<!--
+Kolmostasolla listausta laajennetaan joukkueen jäsenten nimillä ja joukkueen 
+pisteillä.
+
+Tulokset ovat oletuksena sarjoittain pistejärjestyksessä eniten pisteitä saanut 
+joukkue ensimmäisenä.
+
+Joukkueiden nimistä tehdään linkkejä, jotka vievät joukkuelomakkeeseen. 
+Lomakkeeseen tulevat muokattavaksi klikatun joukkueen tiedot.
+
+-->
+        
+<h2>Lisää rasti</h2>
+<!--
+Tähän tulee rastin lisäämistä varten lomake
+Koodi saa olla mitä tahansa, mutta sen on oltava uniikki
+Lat täytyy olla numero
+Lon täytyy olla numero
+Jos kaikkia tietoja ei ole täytetty oikein, niin lisäystä ei tehdä.
+
+Sivun lomakkeissa saa käyttää input-elementeissä vain seuraavia tyyppejä: text, radio, checkbox ja submit. 
+Syöttökentissä ei saa käyttää html-koodissa määriteltäviä rajoitteita kuten required, pattern, min, max, 
+maxlength tai minlength. Kaikkien tehtävässä mainittujen rajoitteiden tarkistukset on tehtävä 
+javascript-koodissa.
+
+-->
+
+<h2>Joukkue</h2>
+        
+<!--
+Kolmostasolla täydennä tähän lomake jolla voi lisätä uuden joukkueen tai muokata
+jo olemassa olevan joukkueen tietoja. 
+
+Sivun lomakkeissa saa käyttää input-elementeissä vain seuraavia tyyppejä: text, radio, checkbox ja submit. 
+Syöttökentissä ei saa käyttää html-koodissa määriteltäviä rajoitteita kuten required, pattern, min, max, 
+maxlength tai minlength. Kaikkien tehtävässä mainittujen rajoitteiden tarkistukset on tehtävä 
+javascript-koodissa.
+
+Joukkueelta kysytään nimi, sarja ja lista jäsenistä. 
+
+sarja on valittava radiopainikkeilla, joista yhden on oltava aina valittuna
+
+Jäseniä voi syöttää n kappaletta. Jäseniä on aina syötettävä vähintään
+kaksi kappaletta eli alussa on oltava kentät kahden jäsenen nimille. 
+
+Uusia syöttökenttiä luodaan tarpeen mukaan. 
+
+Jos kaikkia pyydettyjä tietoja (joukkueen nimi ja väh. kaksi jäsentä ) ei ole
+syötetty, niin lisäystä ei tehdä. 
+
+Lisää joukkue -painike on disabloituna kunnes pakolliset tiedot on syötetty.
+
+Onnistuneen lisäämisen jälkeen lomakkeen kenttien sisältö tyhjennetään.
+
+Näytä lomakkeella vain jompikumpi painikkeista: 
+  - Näytä "Lisää joukkue"-painike silloin, kun ollaan lisäämässä uutta joukkuetta
+  - Näytä "Tallenna muutokset"-painike silloin, kun ollaan muokkaamassa olemassa olevan joukkueen tietoja
+
+Uusi joukkue on lisättävä myös sivulla näkyvään joukkuelistaukseen oikealle 
+paikalle. 
+
+Oletuksena joukkueen pisteet ovat 0, kuljettu matka on 0 km ja käyttämä aika on 
+00:00:00.
+-->
+
+
+<!--
+Viitostasolla lisää saman lomakkeen yhteyteen listaus joukkueen rastileimauksista. 
+
+Mahdollista leimausten täydellinen muokkaaminen eli leimauksen voi kokonaan 
+poistaa tai vaihtaa leimattua rastia tai leimauksen kellonaikaa. 
+
+Joukkueelle voi myös lisätä uusia leimauksia. 
+
+Rasti valitaan alasvetovalikosta. 
+
+Jos joukkueen leimauksiin tehdään muutoksia niin myös tuloslistaus täytyy 
+päivittää.
+
+-->
+<h2>Rastit</h2>
+
+<!-- Tähän tulee listaus kaikista rastikoodeista -->      
+
+<!-- Tästä eteenpäin on vain apuvälineenä käytettäviä skriptejä. Älä poista tai muuta -->
+<!-- HTMLinspectoria käytetään sivun live-muutosten validointiin. Kannattaa
+vielä varmuuden vuoksi ajaa välillä myös W3C:n validaattori -->
+<script src="https://appro.mit.jyu.fi/tools/htmlinspector/html-inspector.js"></script>
+<!-- Sivun validoinnin W3C:n validaattorilla voit tehdä milloin tahansa näppäinyhdistelmällä CTRL+ALT+V -->
+<script src="https://appro.mit.jyu.fi/tools/validator/validator.user.js"></script>
+<script src="https://appro.mit.jyu.fi/tools/jshint/jshint.js"></script>
+<script src="https://appro.mit.jyu.fi/tools/jshint/jshint.user.js"></script>
+<script src="https://appro.mit.jyu.fi/tools/htmlinspector/htmlinspector-live.js"></script>
+</body>
+</html>
