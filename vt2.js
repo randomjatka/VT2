@@ -20,6 +20,7 @@
 		console.log(xmldata);
 		console.log(xmldata.documentElement);
 		console.log(xmldata.documentElement.getElementsByTagName("joukkue"));
+		console.log(xmldata.documentElement.getElementsByTagName("sarjat"));
 
 		tulokset();
 		rastit();
@@ -35,9 +36,14 @@
 function tulokset() {
 	let kaikkiJoukkueet = xmldata.documentElement.getElementsByTagName("joukkue");
 	let kohdeTaulukko = document.getElementById("tulosTaulukko");
+	let kaikkiSarjat = xmldata.documentElement.getElementsByTagName("sarja");
+	//console.log(kaikkiSarjat[0].parentNode.)
+	//let kaikkilapsiSarjat = kaikkiSarjat.getElementsByTagName("sarjat")[0];
 	//let viiteSarjat = xmldata.documentElement.getElementsByTagName("sarjat")[0]; tämä sanoo että viiteSarjat ei ole iterable, ehkä etsintälause ottaa
 	//väärän listan?
-	
+
+
+	//Muista järjestää ensin sarjojen ja sitten joukkueen aakkosjärjestyksen mukaan!
 	for (let joukkue of kaikkiJoukkueet) {
 		let tr = document.createElement("tr");
 		let td = document.createElement("td");
@@ -46,6 +52,11 @@ function tulokset() {
 		tr.appendChild(td);
 		tr.appendChild(tdKaksi);
 		let sarjanID = joukkue.getAttribute("sarja");
+		for (let vertausSarja of kaikkiSarjat) {
+			if (vertausSarja.getAttribute("sarjaid") == sarjanID) {
+				sarjanID = vertausSarja.getAttribute("kesto") + "h";
+			}
+		}
 		//let sarjanKesto = 0;
 		/*for (let sarja of viiteSarjat) {
 			if (sarjanID == sarja.getAttribute("sarjaid")) {
@@ -63,6 +74,7 @@ function tulokset() {
 
 function rastit(){
 	let kaikkiRastit = xmldata.documentElement.getElementsByTagName("rasti");
+	//Tähän kaikkiRastit - järjestys aakkosjärjestykseen
 	let kohdeLista = document.getElementById("rastiLista");
 	for (let rasti of kaikkiRastit) {
 		let li = document.createElement("li");
