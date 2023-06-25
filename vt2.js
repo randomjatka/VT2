@@ -22,15 +22,59 @@
 		console.log(xmldata.documentElement.getElementsByTagName("joukkue"));
 		//console.log(xmldata.documentElement.getElementsByTagName("sarjat"));
 		//console.log(xmldata.documentElement.getElementsByTagName("rasti"));
-
 		tulokset();
 		rastit();
+
+		let rastipainike = document.getElementById("lahetyspainike");
+		rastipainike.addEventListener("click", lisaaRasti);
 	  }
 	);
 
   });
  // voit määritellä omia funktioita tänne saman lohkon sisään jolloin näkevät myös xmldata-muuttujan
  // ...
+
+function lisaaRasti(e) {
+	e.preventDefault();
+	let lomake = document.getElementById("rastinLisays");
+	console.log(lomake);
+
+	let kaikkiRastit = xmldata.documentElement.getElementsByTagName("rasti");
+	//let rastiLista = xmldata.documentElement.getElementsByTagName("rastit"); tätä ei välttämättä tarvitse
+	let vanhatTunnisteet = [];
+
+	// Etsitään vanhojen rastien korkein tunnisteen arvo, jotta sen avulla voidaan muodostaa uuden rastin tunniste
+	for (let rasti of kaikkiRastit) {
+		vanhatTunnisteet.push(parseInt(rasti.getAttribute("tunniste")));
+	}
+	let entinenKorkein = vanhatTunnisteet.reduce((a,b) => Math.max(a,b, -Infinity));
+
+	console.log(vanhatTunnisteet);
+	/*let uusiRasti = {
+		"tunniste": entinenKorkein+1,
+		"koodi": lomake[2].value,
+		"lat": lomake[0].value,
+		"lon": lomake[1].value
+	}; */
+	//console.log(uusiRasti);
+	//Lisätään uusi rasti xmldataan, kaikkien muiden rastien perälle. 
+	let rastixml = xmldata.createElement("rasti");
+	rastixml.setAttribute("tunniste", (entinenKorkein+1));
+	rastixml.setAttribute("koodi", (lomake[2].value));
+	rastixml.setAttribute("lat", (lomake[0].value));
+	rastixml.setAttribute("lon", (lomake[1].value));
+
+	xmldata.children[0].children[0].appendChild(rastixml);
+	console.log(xmldata.children[0].children[0]);
+
+	let kohdeLista = document.getElementById("rastiLista");
+	// Poistetaan vanha lista, muistaen että poistaessa listan pituus lyhenee koko ajan joten pituus pitää ottaa talteen etukäteen
+	let listanPituus = kohdeLista.children.length;
+	for (let i=0; i<listanPituus; i++) {
+		kohdeLista.children[0].remove();
+	}
+	rastit();
+}
 
 function tulokset() {
 	let kaikkiJoukkueet = xmldata.documentElement.getElementsByTagName("joukkue");
