@@ -21,6 +21,7 @@
 		console.log(xmldata.documentElement);
 		console.log(xmldata.documentElement.getElementsByTagName("joukkue"));
 		console.log(xmldata.documentElement.getElementsByTagName("sarjat"));
+		console.log(xmldata.documentElement.getElementsByTagName("rasti"));
 
 		tulokset();
 		rastit();
@@ -74,12 +75,32 @@ function tulokset() {
 
 function rastit(){
 	let kaikkiRastit = xmldata.documentElement.getElementsByTagName("rasti");
-	//Tähän kaikkiRastit - järjestys aakkosjärjestykseen
-	let kohdeLista = document.getElementById("rastiLista");
+
+	let helpommatRastit = [];
 	for (let rasti of kaikkiRastit) {
+		let helpotettuRasti = {
+			"tunniste": rasti.getAttribute("tunniste"),
+			"koodi": rasti.getAttribute("koodi"),
+			"lat": rasti.getAttribute("lat"),
+      		"lon": rasti.getAttribute("lon")
+		};
+		helpommatRastit.push(helpotettuRasti);
+	}
+	function rastiJarjestys(a,b) {
+		let tulos = a.koodi.localeCompare(b.koodi, 'fi', {sensitivity: 'base'});
+    	if ( tulos) {
+      		return tulos;
+		}
+	}
+	helpommatRastit.sort(rastiJarjestys);
+	console.log(helpommatRastit);
+
+	let kohdeLista = document.getElementById("rastiLista");
+	for (let helpotettu of helpommatRastit) {
 		let li = document.createElement("li");
 		kohdeLista.appendChild(li);
-		li.textContent = rasti.getAttribute("koodi");
+		li.textContent = helpotettu["koodi"];
+		//li.textContent = rasti.getAttribute("koodi");
 		//let li = document.createElement(li);
 		//let liKaksi = document.createElement(li);
 
