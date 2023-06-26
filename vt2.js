@@ -22,9 +22,10 @@
 		console.log(xmldata.documentElement.getElementsByTagName("joukkue"));
 		//console.log(xmldata.documentElement.getElementsByTagName("sarjat"));
 		//console.log(xmldata.documentElement.getElementsByTagName("rasti"));
+		//Kutsutaan funktioita, jotka tekevät joukkeista taulukon ja rasteista listan ja järjestää ne sivulle
 		tulokset();
 		rastit();
-
+		// Noudetaan sivulla oleva painike rastin lisäykselle ja lisätään siihen tapahtumankäsittelijä
 		let rastipainike = document.getElementById("lahetyspainike");
 		rastipainike.addEventListener("click", lisaaRasti);
 	  }
@@ -32,15 +33,27 @@
 
   });
  // voit määritellä omia funktioita tänne saman lohkon sisään jolloin näkevät myös xmldata-muuttujan
- // ...
-
+ /**
+  * Funktio, jolla lisätään rasti xmldataan sekä sivun lopussa olevaan listaan. Ensin haetaan lomake, josta syötteet etsitään ja
+  * alustetaan aputaulukot, joita käytetään rastin syötteiden oikeellisuustarkistuksissa. Sitten tarkastetaan, että syötteet
+  * eivät ole tyhjiä, syötettyä koodia ei ole jo olemassa, ja että lat ja lon ovat numeroita. Kun syötteet ovat tarkastettu,
+  * ne sijoitetaan uuteen rastielementtiin, ja rasti lisätään xmldataan. Onnistuneen lisäyksen jälkeen nollataan syötekentät,
+  * poistetaan sivulla oleva vanha lista ja kutsutaan uudestaan rastit() - funktiota, joka rakentaa rastilistan uudestaan
+  * sisällyttäen syötetyn elementin.
+  * 
+  * @param {*} e tapahtuma, joka kutsui funktiota
+  * @var {Element} kaikkiRastit - rastit, joiden sisältöä verrataan lisättävään rastiin
+  * @var {Array} vanhatTunnisteet - aputaulukko, johon kootaan talteen kaikkien olemassa olevien rastien tunnistenumerot
+  * @var {Array} vanhatKoodit - aputaulukko, johon kootaan talteen kaikkien olemassa olevien rastien koodit
+  * @var {Element} rastixml - syötteenä lisättävä elementti
+  * @var {li} kohdeLista - sivulla oleva lista, johon lisättävä elementti liitetään
+  */
 function lisaaRasti(e) {
 	e.preventDefault();
 	let lomake = document.getElementById("rastinLisays");
 	console.log(lomake);
 
 	let kaikkiRastit = xmldata.documentElement.getElementsByTagName("rasti");
-	//let rastiLista = xmldata.documentElement.getElementsByTagName("rastit"); tätä ei välttämättä tarvitse
 	let vanhatTunnisteet = [];
 	let vanhatKoodit = [];
 
@@ -52,14 +65,6 @@ function lisaaRasti(e) {
 	let entinenKorkein = vanhatTunnisteet.reduce((a,b) => Math.max(a,b, -Infinity));
 
 	console.log(vanhatTunnisteet);
-	/*let uusiRasti = {
-		"tunniste": entinenKorkein+1,
-		"koodi": lomake[2].value,
-		"lat": lomake[0].value,
-		"lon": lomake[1].value
-	}; */
-	//console.log(uusiRasti);
-	//Lisätään uusi rasti xmldataan, kaikkien muiden rastien perälle. 
 
 	let syotekoodi = lomake[3].value;
 	let syotelat = lomake[1].value;
@@ -97,6 +102,7 @@ function lisaaRasti(e) {
 	lomake[0].value = "";
 	lomake[1].value = "";
 
+	// Lisätään syötetty rasti xmldataan
 	xmldata.children[0].children[0].appendChild(rastixml);
 	console.log(xmldata.children[0].children[0]);
 
@@ -109,6 +115,19 @@ function lisaaRasti(e) {
 	rastit();
 }
 
+/**
+ * Funktio, jolla muodostetaan joukkueista tulostaulukko. Ensin haetaan taulukko sivusta, ja joukkueet ja sarjat xmldatasta.
+ * Sitten muodostetaan viiteobjekti sarjojen id:eistä ja kestoista, sekä muodostetaan joukkeista helposti järjestettävä taulukko.
+ * Sarjan keston löytämiseksi hyödynnetään helpommatSarjat-viiteobjektia. Sitten järjestetään apuvertailufunktiota käyttämällä
+ * joukkueet ensisijaisesti sarjan, ja toissijaisesti nimen mukaan. Lopuksi generoidaan tarvittava
+ * taulukon rakenne uudelle joukkueelle ja lisätään joukkueen tiedot taulukkoon.
+ * @var {Element} kaikkiJoukkueet - pohjadata, josta funktio ottaa taulukoitavat ja järjestettävät datapisteet
+ * @var {Element} kohdeTaulukko - sivun taulukko, johon joukkueet lisätään
+ * @var {Element} kaikkiSarjat - pohjadata sarjoista, joista katsotaan id:eihin täsmäävät kestot
+ * @var {Object} helpommatSarjat - sarjat muutettuna javascript-objektiksi, joissa id:t ovat avaimia ja kestot arvoja
+ * @var {Array} helpommatJoukkueet - aputaulukko joukkeista javascript muodossa, jotta järjestäminen olisi helpompaa
+ * @var {Function} joukkueTuplaJarjestys - apufunktio, jolla joukkueet järjestetään
+ */
 function tulokset() {
 	let kaikkiJoukkueet = xmldata.documentElement.getElementsByTagName("joukkue");
 	let kohdeTaulukko = document.getElementById("tulosTaulukko");
@@ -150,12 +169,11 @@ function tulokset() {
 	}
 	helpommatJoukkueet.sort(joukkueTuplaJarjestys);
 	console.log(helpommatJoukkueet);
-
-	//console.log(kaikkiSarjat[0].parentNode.)
 	//let kaikkilapsiSarjat = kaikkiSarjat.getElementsByTagName("sarjat")[0];
 	//let viiteSarjat = xmldata.documentElement.getElementsByTagName("sarjat")[0]; tämä sanoo että viiteSarjat ei ole iterable, ehkä etsintälause ottaa
 	//väärän listan?
 
+	// Silmukka, joka lisää taulukkoon tarvittavan rakenteen ja tiedot jokaiselle joukkueelle
 	for (let joukkue of helpommatJoukkueet) {
 		let tr = document.createElement("tr");
 		let td = document.createElement("td");
@@ -163,34 +181,21 @@ function tulokset() {
 		kohdeTaulukko.appendChild(tr);
 		tr.appendChild(td);
 		tr.appendChild(tdKaksi);
-		// Tässä etsitään aiemmin tehdystä sarjojen viiteobjektista täsmäävä sarjan id joukkueen id:n kanssa,
-		// Sitten talletetaan täsmänneen indeksin kohdalta löytyvä kesto.
-		//let halutunSarjanIndeksi = Object.keys(helpommatSarjat).findIndex(element => element == joukkue.getAttribute("sarja"));
-		//let sarjanKesto = Object.values(helpommatSarjat)[halutunSarjanIndeksi];
-
-		/*let sarjanID = joukkue.getAttribute("sarja");
-		for (let vertausSarja of kaikkiSarjat) {
-			if (vertausSarja.getAttribute("sarjaid") == sarjanID) {
-				sarjanID = vertausSarja.getAttribute("kesto") + "h";
-			}
-		}
-		*/
-		//let sarjanKesto = 0;
-		/*for (let sarja of viiteSarjat) {
-			if (sarjanID == sarja.getAttribute("sarjaid")) {
-				sarjanKesto = sarja.getAttribute("kesto");
-			}
-		}
-		*/
-		//let sarjanNimi = document.querySelector("data>sarjat>sarja[sarjaid='2737134']");
-		//let sarjanKesto = sarjanNimi.kesto;
 		td.textContent = joukkue["sarja"] + "h";
 		tdKaksi.textContent = joukkue["nimi"];
-		//tdKaksi.textContent = joukkue.getElementsByTagName("nimi")[0].textContent;
-		//thKaksi.textContent = joukkue.lastChild.textContent;
 	}
 }
 
+
+/**
+ * Funktio, jolla rastit lisätään ja järjestetään sivun lopussa olevaan listaan. Ensin otetaan pohjadatasta rastit,
+ * sitten muodostetaan taulukko, joka on helpompi järjestää. Järjestetään rastit niiden koodien perusteella, ja sitten
+ * järjestetyn taulukon jokainen alkio lisätään sivun lopussa olevaan listaan
+ * @var {Element} kaikkiRastit - pohjadata, josta funktio ottaa listattavat ja järjestettävät datapisteet
+ * @var {Array} helpommatRastit - aputaulukko javascript muodossa, jotta rastit olisi helpompi järjestää
+ * @var {Function} rastiJarjestys - apufunktio, joka järjestää rastit niiden koodi-attribuutin perusteella
+ * @var {li} kohdeLista - sivulla oleva lista, johon rastit lisätään ja järjestetään
+ */
 function rastit(){
 	let kaikkiRastit = xmldata.documentElement.getElementsByTagName("rasti");
 
@@ -218,11 +223,7 @@ function rastit(){
 		let li = document.createElement("li");
 		kohdeLista.appendChild(li);
 		li.textContent = helpotettu["koodi"];
-		//li.textContent = rasti.getAttribute("koodi");
-		//let li = document.createElement(li);
-		//let liKaksi = document.createElement(li);
 
 	}
 }
-
 }
