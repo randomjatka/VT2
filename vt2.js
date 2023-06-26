@@ -48,7 +48,7 @@
   * @var {Element} rastixml - syötteenä lisättävä elementti
   * @var {li} kohdeLista - sivulla oleva lista, johon lisättävä elementti liitetään
   */
-function lisaaRasti(e) {
+let lisaaRasti = function lisaaRasti(e) {
 	e.preventDefault();
 	let lomake = document.getElementById("rastinLisays");
 	console.log(lomake);
@@ -98,9 +98,9 @@ function lisaaRasti(e) {
 	rastixml.setAttribute("lon", Number(syotelon));
 
 	// Nollataan syötekentät lisäyksen jälkeen
-	lomake[2].value = "";
-	lomake[0].value = "";
+	lomake[3].value = "";
 	lomake[1].value = "";
+	lomake[2].value = "";
 
 	// Lisätään syötetty rasti xmldataan
 	xmldata.children[0].children[0].appendChild(rastixml);
@@ -113,7 +113,7 @@ function lisaaRasti(e) {
 		kohdeLista.children[0].remove();
 	}
 	rastit();
-}
+};
 
 /**
  * Funktio, jolla muodostetaan joukkueista tulostaulukko. Ensin haetaan taulukko sivusta, ja joukkueet ja sarjat xmldatasta.
@@ -128,7 +128,7 @@ function lisaaRasti(e) {
  * @var {Array} helpommatJoukkueet - aputaulukko joukkeista javascript muodossa, jotta järjestäminen olisi helpompaa
  * @var {Function} joukkueTuplaJarjestys - apufunktio, jolla joukkueet järjestetään
  */
-function tulokset() {
+let tulokset = function tulokset() {
 	let kaikkiJoukkueet = xmldata.documentElement.getElementsByTagName("joukkue");
 	let kohdeTaulukko = document.getElementById("tulosTaulukko");
 	let kaikkiSarjat = xmldata.documentElement.getElementsByTagName("sarja");
@@ -184,7 +184,7 @@ function tulokset() {
 		td.textContent = joukkue["sarja"] + "h";
 		tdKaksi.textContent = joukkue["nimi"];
 	}
-}
+};
 
 
 /**
@@ -196,7 +196,7 @@ function tulokset() {
  * @var {Function} rastiJarjestys - apufunktio, joka järjestää rastit niiden koodi-attribuutin perusteella
  * @var {li} kohdeLista - sivulla oleva lista, johon rastit lisätään ja järjestetään
  */
-function rastit(){
+let rastit = function rastit(){
 	let kaikkiRastit = xmldata.documentElement.getElementsByTagName("rasti");
 
 	let helpommatRastit = [];
@@ -225,5 +225,5 @@ function rastit(){
 		li.textContent = helpotettu["koodi"];
 
 	}
-}
+};
 }
