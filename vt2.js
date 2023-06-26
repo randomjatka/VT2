@@ -98,9 +98,10 @@ let lisaaRasti = function lisaaRasti(e) {
 	rastixml.setAttribute("lon", Number(syotelon));
 
 	// Nollataan syötekentät lisäyksen jälkeen
-	lomake[3].value = "";
-	lomake[1].value = "";
-	lomake[2].value = "";
+	//lomake[3].value = "";
+	//lomake[1].value = "";
+	//lomake[2].value = "";
+	lomake.reset();
 
 	// Lisätään syötetty rasti xmldataan
 	xmldata.children[0].children[0].appendChild(rastixml);
