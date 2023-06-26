@@ -161,7 +161,7 @@ let tulokset = function tulokset() {
 			return tulos;
 		}
 		if (tulos == 0) {
-			let tulosKaksi = a.nimi.localeCompare(b.nimi, 'fi', {sensitivity: 'base'});
+			let tulosKaksi = a.nimi.trim().localeCompare(b.nimi.trim(), 'fi', {sensitivity: 'base'});
 			if (tulosKaksi) {
 				return tulosKaksi;
 			}
