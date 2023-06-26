@@ -1,0 +1,49 @@
+#tulosTaulukko{
+    border: solid orange 2px;
+    border-top-style: none;
+    padding: 5px;
+  }
+  
+  #rastinLisays {
+    border: solid orange 2px;
+    float: left;
+    min-width: 20%;
+  }
+
+ #harmaalaatikko {
+   border: solid gray 1px;
+   margin: 5%;
+   padding-left: 5%;
+ }
+   
+  #harmaalaatikko>p {
+    margin-left: 5%;
+    margin-right: 5%;
+    min-width: 80%;
+  }
+  
+  #harmaalaatikko>p>label {
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  #rastinLisays>p>label>input {
+    max-width: 60%;
+  }
+  
+  #rastiLista {
+    clear: left;
+  }
+  
+  h2 {
+    clear: left;
+  }
+  
+  caption {
+    border: solid orange 2px;
+    border-bottom-style: none;
+  }
+
+  ul {
+    list-style-type: none;
+  }

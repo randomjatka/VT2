@@ -42,10 +42,12 @@ function lisaaRasti(e) {
 	let kaikkiRastit = xmldata.documentElement.getElementsByTagName("rasti");
 	//let rastiLista = xmldata.documentElement.getElementsByTagName("rastit"); tätä ei välttämättä tarvitse
 	let vanhatTunnisteet = [];
+	let vanhatKoodit = [];
 
 	// Etsitään vanhojen rastien korkein tunnisteen arvo, jotta sen avulla voidaan muodostaa uuden rastin tunniste
 	for (let rasti of kaikkiRastit) {
 		vanhatTunnisteet.push(parseInt(rasti.getAttribute("tunniste")));
+		vanhatKoodit.push(rasti.getAttribute("koodi"));
 	}
 	let entinenKorkein = vanhatTunnisteet.reduce((a,b) => Math.max(a,b, -Infinity));
 
@@ -58,11 +60,42 @@ function lisaaRasti(e) {
 	}; */
 	//console.log(uusiRasti);
 	//Lisätään uusi rasti xmldataan, kaikkien muiden rastien perälle. 
+
+	let syotekoodi = lomake[3].value;
+	let syotelat = lomake[1].value;
+	let syotelon = lomake[2].value;
+
+	// Tarkistetaan että kaikkiin kenttiin on syötetty ainakin yksi muu merkki kuin välilyönti
+	if (syotekoodi.trim() == "" || syotelat.trim() == "" || syotelon.trim() == "") {
+		console.log("Jokin kenttä on tyhjä");
+		return;
+	}
+
+	// Tarkistetaan onko syötetty koodi jo olemassa vanhoissa rasteissa
+	if (vanhatKoodit.includes(syotekoodi)) {
+		console.log("Koodi on jo olemassa");
+		return;
+	}
+
+	// Tarkistetaan, että lat ja lon kääntyvät oikein numerotyypeiksi
+	if (isNaN(syotelat) || isNaN(syotelon)) {
+		console.log("Latitude tai Longitude ei ole numero");
+		return;
+	}
+
+	// Koodin syötteessä hyväksytään välilyönnit, kunhan on ainakin yksi merkki jossain vaiheessa syötettä. Ohjeistus sanoi että koodi saa
+	// olla mitä tahansa, kunhan kaikki tiedot on täytetty, joten välilyönnitkin sallitaan. Huomioi, että tämä vaikuttaa rastien järjestyksessä,
+	// koodit jotka alkavat välilyönneillä menevät listan alkuun
 	let rastixml = xmldata.createElement("rasti");
 	rastixml.setAttribute("tunniste", (entinenKorkein+1));
-	rastixml.setAttribute("koodi", (lomake[2].value));
-	rastixml.setAttribute("lat", (lomake[0].value));
-	rastixml.setAttribute("lon", (lomake[1].value));
+	rastixml.setAttribute("koodi", syotekoodi);
+	rastixml.setAttribute("lat", Number(syotelat));
+	rastixml.setAttribute("lon", Number(syotelon));
+
+	// Nollataan syötekentät lisäyksen jälkeen
+	lomake[2].value = "";
+	lomake[0].value = "";
+	lomake[1].value = "";
 
 	xmldata.children[0].children[0].appendChild(rastixml);
 	console.log(xmldata.children[0].children[0]);
